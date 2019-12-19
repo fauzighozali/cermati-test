@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import androidx.appcompat.widget.SearchView;
@@ -70,6 +71,12 @@ public class MainActivity extends AppCompatActivity implements MainView.InitView
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (newText != null && TextUtils.getTrimmedLength(newText) > 0) {
+//                    mainPresenter.getUserList(newText);
+                }else {
+                    errorView(View.VISIBLE, "Cermati", "Online Test Search Github Users");
+                    users.clear();
+                }
                 return false;
             }
         });
