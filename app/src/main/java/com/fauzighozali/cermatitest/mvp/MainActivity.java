@@ -1,46 +1,40 @@
 package com.fauzighozali.cermatitest.mvp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuItemCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+
 import androidx.appcompat.widget.SearchView;
-import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.fauzighozali.cermatitest.R;
-import com.fauzighozali.cermatitest.adapter.MainAdapter;
+import com.fauzighozali.cermatitest.fragment.FragmentResult;
 import com.fauzighozali.cermatitest.model.Items;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class MainActivity extends AppCompatActivity implements MainView.InitView {
+public class MainActivity extends AppCompatActivity {
 
-    private MainPresenter mainPresenter;
-    private MainAdapter mainAdapter;
-    private List<Items> users;
+//    private MainPresenter mainPresenter;
+//    private MainAdapter mainAdapter;
+//    private List<Items> users;
+//    private LinearLayoutManager layoutManager;
 
-    @InjectView(R.id.progress_main) ProgressBar mProgressBar;
-    @InjectView(R.id.text_view_error_title) TextView mErrorTitle;
-    @InjectView(R.id.text_view_error_message) TextView mErrorMessage;
     @InjectView(R.id.empty_view) RelativeLayout mEmptyView;
-    @InjectView(R.id.search_view_main) SearchView mSearchView;
-    @InjectView(R.id.recycler_main) RecyclerView mRecyclerView;
+    @InjectView(R.id.toolbar) Toolbar mToolbar;
+
+    private String queryParamForFragment;
+    private List<Items> users = new ArrayList<>();
+    private String querySearch = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,70 +42,76 @@ public class MainActivity extends AppCompatActivity implements MainView.InitView
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
-        mainPresenter = new MainPresenter(this);
-        initView();
-        searchUser();
+        setSupportActionBar(mToolbar);
+
+//        mainPresenter = new MainPresenter(this);
+//        initView();
+//        searchUser();
     }
 
-    private void initView() {
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setHasFixedSize(true);
+    public void setQuerySearch(String querySearch) {
+        this.querySearch = querySearch;
     }
 
-    private void searchUser() {
-        mSearchView.setQueryHint("Search Github Users");
-        mSearchView.setIconifiedByDefault(false);
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint(getString(R.string.search_hint));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                mainPresenter.getUserList(query);
+                mEmptyView.setVisibility(View.GONE);
+                users.clear();
+                setQuerySearch(query);
+                queryParamForFragment = query;
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_result, FragmentResult.newInstance(query),"MyFragment").commit();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText != null && TextUtils.getTrimmedLength(newText) > 0) {
-//                    mainPresenter.getUserList(newText);
-                }else {
-                    errorView(View.VISIBLE, "Cermati", "Online Test Search Github Users");
-                    users.clear();
-                }
                 return false;
             }
         });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public void showLoading() {
-        mProgressBar.setVisibility(View.VISIBLE);
-        errorView(View.INVISIBLE, "", "");
-    }
+//    private void initView() {
+//        layoutManager = new LinearLayoutManager(this);
+//        mRecyclerView.setLayoutManager(layoutManager);
+//        mRecyclerView.setHasFixedSize(true);
+//    }
 
-    @Override
-    public void hideLoading() {
-        mProgressBar.setVisibility(View.INVISIBLE);
-    }
+//    private void searchUser() {
+//        mSearchView.setQueryHint("Search Github Users");
+//        mSearchView.setIconifiedByDefault(false);
+//        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(final String query) {
+//                mainPresenter.getUserList(query);
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return false;
+//            }
+//        });
+//    }
 
-    @Override
-    public void userList(List<Items> items) {
-        if (users != null) {
-            users.clear();
-        }
-        users = items;
-        mainAdapter = new MainAdapter(users,this);
-        mRecyclerView.setAdapter(mainAdapter);
-        mainAdapter.notifyDataSetChanged();
-    }
+//    @Override
+//    public void userList(List<Items> items) {
+//        if (users != null) {
+//            users.clear();
+//        }
+//        users = items;
+//        mainAdapter = new MainAdapter(users,this);
+//        mRecyclerView.setAdapter(mainAdapter);
+//        mainAdapter.notifyDataSetChanged();
+//    }
 
-    @Override
-    public void userListFailure(String errorMessage, String keyword) {
-        errorView(View.VISIBLE,  errorMessage, keyword);
-    }
-
-    private void errorView(int visibility, String title, String message){
-        mEmptyView.setVisibility(visibility);
-        mErrorTitle.setText(title);
-        mErrorMessage.setText(message);
-    }
 }

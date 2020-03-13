@@ -1,11 +1,9 @@
 package com.fauzighozali.cermatitest.adapter;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.os.Bundle;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +14,17 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.fauzighozali.cermatitest.R;
+import com.fauzighozali.cermatitest.fragment.FragmentResult;
 import com.fauzighozali.cermatitest.model.Items;
 
 import java.util.List;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> {
 
-    private List<Items> items;
     private Context context;
+    private List<Items> items;
 
-    public MainAdapter(List<Items> items, Context context) {
+    public MainAdapter(Context context, List<Items> items, FragmentResult fragmentResult) {
         this.items = items;
         this.context = context;
     }
@@ -38,9 +37,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.name.setText(items.get(position).getName());
+        holder.name.setText(items.get(position).getLogin());
         Glide.with(context)
-                .load(items.get(position).getAvatar())
+                .load(items.get(position).getAvatarUrl())
                 .apply(
                         RequestOptions.placeholderOf(R.drawable.ic_github)
                 )

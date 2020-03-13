@@ -15,6 +15,7 @@ public interface MainView {
 
     interface GetUser {
         void getUserList(String keyword);
+        void getUserListWithPagination(String keyword, int current_page);
     }
 
 }

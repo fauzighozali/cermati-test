@@ -1,50 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".mvp.MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="?attr/colorPrimary">
-
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/search_view_main"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="#fff"
-                android:layout_marginRight="15dp"
-                android:iconifiedByDefault="false">
-
-                <requestFocus />
-            </androidx.appcompat.widget.SearchView>
-
-        </androidx.appcompat.widget.Toolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <ProgressBar
-        android:id="@+id/progress_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:layout_centerInParent="true" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_main"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/appBar"/>
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark" />
 
-    <include
-        layout="@layout/empty_view" />
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:id="@+id/appBar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
 
-</RelativeLayout>
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:id="@+id/toolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:background="?attr/colorPrimary">-->
+
+<!--            <androidx.appcompat.widget.SearchView-->
+<!--                android:id="@+id/search_view_main"-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="#fff"-->
+<!--                android:layout_marginRight="15dp"-->
+<!--                android:iconifiedByDefault="false">-->
+<!--                <requestFocus />-->
+<!--            </androidx.appcompat.widget.SearchView>-->
+
+<!--        </androidx.appcompat.widget.Toolbar>-->
+
+<!--    </com.google.android.material.appbar.AppBarLayout>-->
+
+<!--    <ProgressBar-->
+<!--        android:id="@+id/progress_main"-->
+<!--        android:layout_width="30dp"-->
+<!--        android:layout_height="30dp"-->
+<!--        android:visibility="invisible"-->
+<!--        android:layout_centerInParent="true" />-->
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/recycler_main"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/appBar"/>-->
+
+    <include layout="@layout/empty_view" />
+
+    <FrameLayout
+        android:id="@+id/frame_layout_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+
+</LinearLayout>
